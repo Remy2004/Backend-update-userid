@@ -1,0 +1,10 @@
+global using Microsoft.EntityFrameworkCore;
+global using Aoun.DAL.Entities;
+global using Aoun.BLL.Interfaces.Admin;
+global using Aoun.BLL.Interfaces.Auth;
+//global using Aoun.BLL.Interfaces.Case;
+global using Aoun.BLL.Interfaces.Profile;
+global using Aoun.BLL.DTOs;
+global using Aoun.BLL.DTOs.Admin;
+global using Aoun.BLL.DTOs.Auth;
+global using Aoun.BLL.DTOs.Profile;

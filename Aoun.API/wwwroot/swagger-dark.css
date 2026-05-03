@@ -1,0 +1,7 @@
+body { background-color: #121212 !important; color: #e0e0e0 !important; }
+.swagger-ui .info .title, .swagger-ui .scheme-container, .swagger-ui .opblock .opblock-summary-method { color: #fff !important; }
+.swagger-ui .scheme-container { background: #1e1e1e !important; border-bottom: 1px solid #333; }
+.swagger-ui .opblock { background: #222 !important; border-color: #444 !important; }
+.swagger-ui section.models { border-color: #444; background: #1e1e1e; }
+.swagger-ui section.models h4, .swagger-ui .parameter__name, .swagger-ui .parameter__type { color: #ccc !important; }
+.topbar { display: none !important; }

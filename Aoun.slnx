@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Aoun.API/Aoun.API.csproj" />
+  <Project Path="Aoun.BLL/Aoun.BLL.csproj" />
+  <Project Path="Aoun.DAL/Aoun.DAL.csproj" />
+  <Project Path="Aoun.Tests/Aoun.Tests.csproj" />
+</Solution>

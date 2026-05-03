@@ -1,0 +1,306 @@
+body.dark-theme { background-color: #1a1a1a !important; color: #e0e0e0 !important; }
+body.dark-theme .swagger-ui .info .title, body.dark-theme .swagger-ui .scheme-container, body.dark-theme .swagger-ui .opblock .opblock-summary-method { color: #fff !important; }
+body.dark-theme .swagger-ui .scheme-container { background: #222 !important; box-shadow: 0 1px 2px rgba(0,0,0,0.3); border-bottom: 1px solid #444; }
+body.dark-theme .swagger-ui .opblock { background: #2a2a2a !important; border-color: #555 !important; }
+body.dark-theme .swagger-ui section.models { border-color: #555; background: #222; }
+body.dark-theme .swagger-ui section.models h4, body.dark-theme .swagger-ui .parameter__name, body.dark-theme .swagger-ui .parameter__type { color: #ccc !important; }
+body.dark-theme .swagger-ui .response-col_status, body.dark-theme .swagger-ui .response-col_description { color: #ccc !important; }
+
+/* تصميم الزر الدائري العائم (FAB) */
+#theme-toggle {
+    position: absolute;
+    top: 110px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #4990e2;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+/* تأثير التمرير (hover) في الوضع الفاتح */
+#theme-toggle:hover {
+    background-color: #00d8ff;
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 216, 255, 0.5);
+}
+
+/* تصميم الزر في الوضع الداكن */
+body.dark-theme #theme-toggle {
+    background-color: #333333;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* تأثير التمرير (hover) في الوضع الداكن */
+body.dark-theme #theme-toggle:hover {
+    background-color: #555555;
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-theme {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+}
+
+/* containers */
+body.dark-theme .swagger-ui .scheme-container {
+    background: #1e1e2f !important;
+    border-bottom: 1px solid #2c2c3a;
+}
+
+/* endpoint blocks */
+body.dark-theme .swagger-ui .opblock {
+    background: #1e1e2f !important;
+    border-color: #2c2c3a !important;
+}
+
+/* models section */
+body.dark-theme .swagger-ui section.models {
+    background: #1e1e2f !important;
+    border-color: #2c2c3a !important;
+}
+
+/* hover effect */
+body.dark-theme .swagger-ui .opblock:hover {
+    background: #2a2a40 !important;
+}
+body.dark-theme .swagger-ui .opblock-tag {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .opblock-summary-path {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .scheme-container,
+body.dark-theme .swagger-ui .scheme-container * {
+    color: #ffffff !important;
+}
+body.dark-theme .swagger-ui section.models .model-title {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui section.models .property-row .property-name {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui section.models .property-name {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui section.models .property-type {
+    color: #bbbbbb !important;
+}
+
+body.dark-theme .swagger-ui .opblock-body,
+body.dark-theme .swagger-ui .opblock-description-wrapper,
+body.dark-theme .swagger-ui .responses-inner {
+    color: #e6e6e6 !important;
+}
+
+body.dark-theme .swagger-ui .opblock-body .opblock-section-header,
+body.dark-theme .swagger-ui .responses-inner h4 {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .opblock .opblock-section-header {
+    background: #2a2a40 !important;
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .parameter__name,
+body.dark-theme .swagger-ui .parameter__type,
+body.dark-theme .swagger-ui .response-col_description {
+    color: #cccccc !important;
+}
+body.dark-theme .swagger-ui .highlight-code,
+body.dark-theme .swagger-ui pre {
+    color: #f1f1f1 !important;
+}
+
+body.dark-theme .swagger-ui .opblock-summary-path {
+    font-weight: 700 !important;
+    font-size: 15px;
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .opblock-tag {
+    font-weight: 800 !important;
+    font-size: 18px;
+    color: #ffffff !important;
+}
+body.dark-theme .swagger-ui .btn {
+    background: #2a2a40 !important;
+    color: #ffffff !important;
+    border: 1px solid #3a3a55 !important;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+body.dark-theme .swagger-ui .btn:hover {
+    background: #3a3a60 !important;
+    border-color: #4da3ff !important;
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .try-out__btn {
+    background: linear-gradient(135deg, #4da3ff, #0066ff) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 700;
+}
+
+body.dark-theme .swagger-ui .try-out__btn:hover {
+    background: linear-gradient(135deg, #66b3ff, #3385ff) !important;
+    box-shadow: 0 0 8px rgba(77,163,255,0.6);
+}
+body.dark-theme .swagger-ui .authorize {
+    background: linear-gradient(135deg, #00c853, #00a844) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 700;
+}
+
+body.dark-theme .swagger-ui .authorize:hover {
+    background: linear-gradient(135deg, #00e676, #00c853) !important;
+    box-shadow: 0 0 8px rgba(0,200,83,0.5);
+}
+body.dark-theme .swagger-ui .execute {
+    background: linear-gradient(135deg, #ff9800, #ff6d00) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 700;
+}
+
+body.dark-theme .swagger-ui .execute:hover {
+    background: linear-gradient(135deg, #ffb74d, #ff9800) !important;
+    box-shadow: 0 0 8px rgba(255,152,0,0.5);
+}
+
+/* =========================
+   Authorize Modal Fixes
+========================= */
+
+/* تم إضافة body.dark-theme لمنعها من التأثير على اللايت مود */
+body.dark-theme .swagger-ui .dialog-ux .modal-ux-content {
+    background: #23233a !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux {
+    background-color: #1b1b2b !important;
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux .modal-ux-header {
+    background: #23233a !important;
+    border-bottom: 1px solid #3a3a55 !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux .modal-ux-header h3 {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux,
+body.dark-theme .swagger-ui .dialog-ux p,
+body.dark-theme .swagger-ui .dialog-ux label,
+body.dark-theme .swagger-ui .dialog-ux span,
+body.dark-theme .swagger-ui .dialog-ux div {
+    color: #e8e8e8 !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux a {
+    color: #4da3ff !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux input[type="text"],
+body.dark-theme .swagger-ui .dialog-ux input[type="password"] {
+    background-color: #2a2a40 !important;
+    color: #ffffff !important;
+    border: 1px solid #4a4a6a !important;
+    font-size: 14px !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux input::placeholder {
+    color: #bbbbbb !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux select {
+    background-color: #2a2a40 !important;
+    color: #ffffff !important;
+    border: 1px solid #4a4a6a !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux .auth-container {
+    background: #1e1e2f;
+    border: 1px solid #3a3a55;
+    padding: 10px;
+    border-radius: 8px;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 500;
+}
+
+body.dark-theme .swagger-ui .dialog-ux .close-modal {
+    color: #ffffff !important;
+}
+
+body.dark-theme .swagger-ui .dialog-ux .auth-container h4,
+body.dark-theme .swagger-ui .dialog-ux .auth-container strong {
+    color: #ffffff !important;
+    font-size: 15px !important;
+    font-weight: 700;
+}
+
+body.dark-theme .swagger-ui .dialog-ux .auth-container code {
+    color: #4da3ff !important;
+    font-size: 13px;
+    background: #2a2a40;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+body.dark-theme .swagger-ui .dialog-ux label {
+    color: #cccccc !important;
+    font-size: 13px;
+}
+
+/* =========================
+   OAS3 + VERSION OVERRIDE FIX
+========================= */
+
+body.dark-theme .swagger-ui .info .link,
+body.dark-theme .swagger-ui .info a,
+body.dark-theme .swagger-ui .info .renderedMarkdown a,
+body.dark-theme .swagger-ui .info .renderedMarkdown code {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    background: transparent !important;
+}
+
+body.dark-theme .swagger-ui .info .version,
+body.dark-theme .swagger-ui .info .title small,
+body.dark-theme .swagger-ui .info span {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+body.dark-theme .swagger-ui .info a[href*="swagger"] {
+    color: #4da3ff !important;
+}
+
+body.dark-theme .swagger-ui .info .link:hover {
+    color: #66b3ff !important;
+}
