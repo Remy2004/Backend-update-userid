@@ -1,4 +1,5 @@
 using Aoun.DAL.Entities;
+using Aoun.DAL.Entities.Auth;
 using Aoun.DAL.Entities.Cases;
 using Aoun.DAL.Entities.Category;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,6 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Campaign> Campaigns { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Donation> Donations { get; set; }
+    // public DbSet<CharityDocument> CharityDocuments { get; set; }   
     public DbSet<CharityDocument> CharityDocuments { get; set; }
     public DbSet<Zakat> ZakatCalculations { get; set; }
     public DbSet<TrustScore> TrustScores { get; set; }

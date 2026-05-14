@@ -91,4 +91,37 @@ public class RealProfileService : IProfileService
 
         return new { TotalDonations = donations.Count, History = donations };
     }
+
+
+
+    //public async Task<UserActivityDto> GetActivityAsync(string userId)
+    //{
+    //    var donations = await _db.Donations
+    //        .AsNoTracking()
+    //        .Where(d => d.UserId.ToString() == userId &&
+    //                    d.PaymentStatus == "Paid" &&
+    //                    !d.IsDeleted)
+    //        .Include(d => d.Case)
+    //        .Include(d => d.Campaign)
+    //        .OrderByDescending(d => d.CreatedAt)
+    //        .Select(d => new UserDonationHistoryDto
+    //        {
+    //            Amount = d.Amount,
+    //            Date = d.CreatedAt,
+    //            TargetTitle =
+    //                d.Case != null ? d.Case.Title :
+    //                d.Campaign != null ? d.Campaign.Title :
+    //                "Emergency Fund"
+    //        })
+    //        .ToListAsync();
+
+    //    return new UserActivityDto
+    //    {
+    //        TotalDonationsCount = donations.Count,
+    //        TotalDonatedAmount = donations.Sum(x => x.Amount),
+    //        History = donations
+    //    };
+    //}
+
+
 }

@@ -43,55 +43,57 @@ public static class DbInitializer
         }
 
         // 3. إنشاء الجمعيات وربطها بـ Id حقيقي (عشان الـ Foreign Key ميضربش)
-        if (!await context.CharityProfiles.AnyAsync())
-        {
-            context.CharityProfiles.AddRange(
-                new CharityProfile
-                {
-                    CharityName = "جمعية الأورمان",
-                    LicenseNumber = "123-ABC",
-                    Status = ProfileStatus.Approved, // خليناها Approved عشان تظهر
-                    UserId = adminUser.Id // 🔥 استخدمنا الـ Id الحقيقي هنا
-                },
-                new CharityProfile
-                {
-                    CharityName = "مؤسسة مصر الخير",
-                    LicenseNumber = "456-XYZ",
-                    Status = ProfileStatus.Approved,
-                    UserId = adminUser.Id // 🔥 وهنا كمان
-                }
-            );
-            await context.SaveChangesAsync();
-        }
+        //if (!await context.CharityProfiles.AnyAsync())
+        //{
+        //    context.CharityProfiles.AddRange(
+        //        new CharityProfile
+        //        {
+        //            CharityName = "جمعية الأورمان",
+        //            LicenseNumber = "123-ABC",
+        //            Description = "جمعية خيرية مصرية تهدف إلى تقديم الدعم والمساعدة للفئات المحتاجة في مختلف المجالات مثل التعليم والصحة والإغاثة.",
+        //            Status = ProfileStatus.Approved, // خليناها Approved عشان تظهر
+        //            UserId = adminUser.Id // 🔥 استخدمنا الـ Id الحقيقي هنا
+        //        },
+        //        new CharityProfile
+        //        {
+        //            CharityName = "مؤسسة مصر الخير",
+        //            LicenseNumber = "456-XYZ",
+        //            Description = "مؤسسة خيرية مصرية تعمل على تحسين حياة الأفراد والأسر في مصر من خلال برامج تنموية شاملة في مجالات التعليم والصحة والإغاثة.",
+        //            Status = ProfileStatus.Approved,
+        //            UserId = adminUser.Id // 🔥 وهنا كمان
+        //        }
+        //    );
+        //    await context.SaveChangesAsync();
+        //}
 
         // 4. إنشاء الحالات وربطها بأول جمعية موجودة
-        if (!await context.Cases.AnyAsync())
-        {
-            var firstCharity = await context.CharityProfiles.FirstOrDefaultAsync();
-            int charityId = firstCharity?.Id ?? 1;
+        //if (!await context.Cases.AnyAsync())
+        //{
+        //    var firstCharity = await context.CharityProfiles.FirstOrDefaultAsync();
+        //    int charityId = firstCharity?.Id ?? 1;
 
-            var sampleCases = new List<Case>
-            {
-                new Case {
-                    Title = "إجراء عملية قلب مفتوح لطفل",
-                    Description = "الطفل سيف يحتاج لعملية قلب عاجلة في مركز أسوان للقلب، الحالة حرجة جداً.",
-                    ImageUrl = "/images/default-case.png",
-                    RequiredAmount = 50000, CollectedAmount = 15000,
-                    IsCompleted = false, IsUrgent = false,
-                    CategoryId = 1, CharityId = charityId, CreatedAt = DateTime.UtcNow
-                },
-                new Case {
-                    Title = "تجهيز 50 شنطة مدرسية",
-                    Description = "توفير المستلزمات الدراسية للأيتام في قرى صعيد مصر قبل بدء العام الدراسي.",
-                    ImageUrl = "/images/default-case.png",
-                    RequiredAmount = 5000, CollectedAmount = 4800,
-                    IsCompleted = false, IsUrgent = false,
-                    CategoryId = 2, CharityId = charityId, CreatedAt = DateTime.UtcNow
-                }
-            };
+        //    var sampleCases = new List<Case>
+        //    {
+        //        new Case {
+        //            Title = "إجراء عملية قلب مفتوح لطفل",
+        //            Description = "الطفل سيف يحتاج لعملية قلب عاجلة في مركز أسوان للقلب، الحالة حرجة جداً.",
+        //            ImageUrl = "/images/default-case.png",
+        //            RequiredAmount = 50000, CollectedAmount = 15000,
+        //            IsCompleted = false, IsUrgent = false,
+        //            CategoryId = 1, CharityId = charityId, CreatedAt = DateTime.UtcNow
+        //        },
+        //        new Case {
+        //            Title = "تجهيز 50 شنطة مدرسية",
+        //            Description = "توفير المستلزمات الدراسية للأيتام في قرى صعيد مصر قبل بدء العام الدراسي.",
+        //            ImageUrl = "/images/default-case.png",
+        //            RequiredAmount = 5000, CollectedAmount = 4800,
+        //            IsCompleted = false, IsUrgent = false,
+        //            CategoryId = 2, CharityId = charityId, CreatedAt = DateTime.UtcNow
+        //        }
+        //    };
 
-            context.Cases.AddRange(sampleCases);
-            await context.SaveChangesAsync();
-        }
+        //    context.Cases.AddRange(sampleCases);
+        //    await context.SaveChangesAsync();
+        //}
     }
 }

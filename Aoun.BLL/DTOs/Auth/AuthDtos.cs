@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Aoun.BLL.DTOs.Auth
 {
     public enum RegistrationAccountType
@@ -11,6 +13,10 @@ namespace Aoun.BLL.DTOs.Auth
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+
+        [Required]
+        [Compare("Password", ErrorMessage = "يجب أن تتطابق كلمة المرور مع تأكيد كلمة المرور")]
+        public string ConfirmPassword { get; set; } = string.Empty;
 
         // 🔥 نستخدم الـ Enum الجديد هنا عشان Swagger يعرض (Donor, Charity) بس
         public RegistrationAccountType AccountType { get; set; } = RegistrationAccountType.Donor;
@@ -57,8 +63,10 @@ namespace Aoun.BLL.DTOs.Auth
         public string CharityName { get; set; } = string.Empty;
         public string LicenseNumber { get; set; } = string.Empty;
         public string? Address { get; set; }
+       public string Description { get; set; } 
+       // public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // 🔥 ضفنا رابط المستند هنا عشان يتبعتوا كلهم مرة واحدة
-        public string DocumentUrl { get; set; } = string.Empty;
+      //  public string DocumentUrl { get; set; } = string.Empty;
     }
 }

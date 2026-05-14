@@ -1,7 +1,8 @@
-using Aoun.BLL.DTOs.Case;
+﻿using Aoun.BLL.DTOs.Case;
 using Aoun.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 namespace Aoun.API.Controllers.Cases
@@ -18,9 +19,9 @@ namespace Aoun.API.Controllers.Cases
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(int? categoryId, string status, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAll(string? categoryName, string status, int page = 1, int pageSize = 10)
         {
-            var result = await _service.GetAllCases(categoryId, status, page, pageSize);
+            var result = await _service.GetAllCases(categoryName, status, page, pageSize);
             return Ok(new
             {
                 result.Data,
@@ -39,17 +40,44 @@ namespace Aoun.API.Controllers.Cases
         [Authorize(Roles = "Charity")]
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CaseCreateDto dto)
+
         {
-            return Ok(await _service.CreateCase(dto));
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+           // var result = await _campaignService.CreateCampaign(dto, userId);
+            return Ok(await _service.CreateCase(dto,userId));
         }
 
 
+
+        //[Authorize(Roles = "Charity")]
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Update(int id, [FromForm] CaseUpdateDto dto)
+        //{
+        //    var result = await _service.UpdateCase(id, dto);
+
+        //    if (!result.Success)
+        //        return BadRequest(new
+        //        {
+        //            result.Success,
+        //            result.Message
+        //        });
+
+        //    return Ok(new
+        //    {
+        //        success = result.Success,
+        //        message = result.Message,
+        //        data = result.Data
+        //    });
+        //}
 
         [Authorize(Roles = "Charity")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromForm] CaseUpdateDto dto)
         {
-            var result = await _service.UpdateCase(id, dto);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = await _service.UpdateCase(id, dto, userId);
 
             if (!result.Success)
                 return BadRequest(new
@@ -69,14 +97,39 @@ namespace Aoun.API.Controllers.Cases
 
 
 
+
+        //[Authorize(Roles = "Charity")]
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var result = await _service.DeleteCase(id);
+
+        //    if (!result.Success)
+        //        return Ok(new
+        //        {
+        //            success = false,
+        //            message = result.Message
+        //        });
+
+        //    return Ok(new
+        //    {
+        //        success = result.Success,
+        //        message = result.Message,
+        //        data = result.DeletedCase
+        //    });
+        //}
+
+
         [Authorize(Roles = "Charity")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _service.DeleteCase(id);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = await _service.DeleteCase(id, userId);
 
             if (!result.Success)
-                return Ok(new
+                return BadRequest(new
                 {
                     success = false,
                     message = result.Message
@@ -89,6 +142,8 @@ namespace Aoun.API.Controllers.Cases
                 data = result.DeletedCase
             });
         }
+
+
 
 
         [HttpGet("public/{id}")]
@@ -120,19 +175,36 @@ namespace Aoun.API.Controllers.Cases
 
         }
 
+        //[Authorize(Roles = "Charity")]
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetCaseDetails(int id)
+        //{
+        //    var result = await _service.GetCaseDetails(id);
+
+        //    if (result == null)
+        //        return NotFound(new { message = "Case not found" });
+
+        //    return Ok(new { data = result });
+        //}
+
+
         [Authorize(Roles = "Charity")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCaseDetails(int id)
         {
-            var result = await _service.GetCaseDetails(id);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = await _service.GetCaseDetails(id, userId);
 
             if (result == null)
-                return NotFound(new { message = "Case not found" });
+                return NotFound(new { message = "غير مصرح أو الحالة غير موجودة" });
 
             return Ok(new { data = result });
         }
 
-                                   
+
+
+
         [HttpGet("charity/{charityId}/cases")]
         public async Task<IActionResult> GetCharityCasesByFilter(
             int charityId,

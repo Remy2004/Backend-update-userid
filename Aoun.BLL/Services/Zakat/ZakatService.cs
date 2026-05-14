@@ -1,4 +1,4 @@
-using Aoun.BLL.DTOs.Zakat;
+﻿using Aoun.BLL.DTOs.Zakat;
 using System.Net.Http.Json;
 
 namespace Aoun.BLL.Services.Zakat;
@@ -61,7 +61,7 @@ public class ZakatService
             silver = Math.Round(silverPrice, 2)
         },
         isEligible = true,
-        message = "The net amount has not reached the Nisab limit."
+        message = "لم يصل المبلغ الصافي إلى حد النصاب."
     };
     }
 }

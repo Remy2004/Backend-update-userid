@@ -10,4 +10,5 @@ public interface IProfileService
     Task<bool> ChangePasswordAsync(string userId, ChangePasswordDto model);
     Task<string> UploadProfilePictureAsync(string userId, IFormFile file);
     Task<object> GetActivityAsync(string userId);
+   // Task<UserActivityDto> GetActivityAsync(string userId);
 }

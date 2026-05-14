@@ -1,4 +1,5 @@
 ﻿using Aoun.DAL.Entities;
+using Aoun.DAL.Entities.Auth;
 using System.ComponentModel.DataAnnotations.Schema;
 //using UserEntity = Aoun.DAL.Entities.User;
 
@@ -37,4 +38,6 @@ namespace Aoun.DAL.Entities.Charity
             public List<Donation>? Donations { get; set; }
             public List<CharityDocument>? Documents { get; set; }
     }
+    
+    
 }

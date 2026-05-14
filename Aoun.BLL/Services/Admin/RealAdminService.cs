@@ -32,6 +32,8 @@ namespace Aoun.BLL.Services.Admin
             var totalCases = await _db.Cases.CountAsync(c => !c.IsDeleted);
             var totalCharities = await _db.CharityProfiles.CountAsync();
             var approvedCharities = await _db.CharityProfiles.CountAsync(c => c.Status == ProfileStatus.Approved);
+            var rejectedCharities = await _db.CharityProfiles.CountAsync(c => c.Status == ProfileStatus.Rejected);
+            var suspendedCharities= await _db.CharityProfiles.CountAsync(c => c.Status == ProfileStatus.Suspended);
 
             // إجمالي المبالغ اللي ادفعت فعلاً في السيستم
             var totalDonationsAmount = await _db.Donations.Where(d => !d.IsDeleted).SumAsync(d => d.Amount);
@@ -43,26 +45,37 @@ namespace Aoun.BLL.Services.Admin
                 totalCases,
                 totalCharities,
                 approvedCharities,
+                rejectedCharities,
+                suspendedCharities,
                 totalDonationsAmount
+
             };
         }
 
         public async Task<object> GetAllCharitiesAsync()
         {
-            // 🔥 هنا بنجيب الجمعيات من CharityProfiles الحقيقية مع الملفات المرفوعة
             return await _db.CharityProfiles.AsNoTracking()
                 .Select(c => new
                 {
                     Id = c.Id,
                     CharityName = c.CharityName,
                     LicenseNumber = c.LicenseNumber,
-                    Status = c.Status.ToString(), // يحولها لنص (Pending, Approved, Rejected)
-                    // جلب رابط الملف اللي الجمعية رفعته عشان الأدمن يشوفه
-                    DocumentUrl = _db.CharityDocuments.Where(doc => doc.CharityProfileId == c.Id).Select(doc => doc.DocumentUrl).FirstOrDefault()
+                    Status = c.Status.ToString(),
+                    Description= c.Description,
+                    CreatedAt = c.CreatedAt,
+
+                    // 🔥 إضافة الملفات بشكل صحيح
+                    Documents = _db.CharityDocuments
+                        .Where(doc => doc.CharityProfileId == c.Id)
+                        .Select(doc => new
+                        {
+                            doc.DocumentType,
+                            doc.FilePath
+                        })
+                        .ToList()
                 })
                 .ToListAsync();
         }
-
         public async Task<object?> GetCharityByIdAsync(int id)
         {
             return await _db.CharityProfiles.AsNoTracking()
@@ -73,7 +86,18 @@ namespace Aoun.BLL.Services.Admin
                     CharityName = c.CharityName,
                     LicenseNumber = c.LicenseNumber,
                     Status = c.Status.ToString(),
-                    DocumentUrl = _db.CharityDocuments.Where(doc => doc.CharityProfileId == c.Id).Select(doc => doc.DocumentUrl).FirstOrDefault()
+                        Description = c.Description,
+                    CreatedAt = c.CreatedAt,
+
+                    // 🔥 هنا برضه الملفات كاملة
+                    Documents = _db.CharityDocuments
+                        .Where(doc => doc.CharityProfileId == c.Id)
+                        .Select(doc => new
+                        {
+                            doc.DocumentType,
+                            doc.FilePath
+                        })
+                        .ToList()
                 })
                 .FirstOrDefaultAsync();
         }
@@ -85,7 +109,8 @@ namespace Aoun.BLL.Services.Admin
 
             if (charity != null)
             {
-                charity.Status = (status == 1) ? ProfileStatus.Approved : ProfileStatus.Rejected;
+                // charity.Status = (status == 1) ? ProfileStatus.Approved : ProfileStatus.Rejected;
+                charity.Status = (ProfileStatus)status;
                 await _db.SaveChangesAsync();
 
                 // إرسال الإيميل للجمعية بعد الموافقة
@@ -131,27 +156,29 @@ namespace Aoun.BLL.Services.Admin
             return true;
         }
 
-        public async Task<object> CreateCaseAsync(CaseCreateDto dto)
-        {
-            var imagePath = "default.png";
+        //public async Task<object> CreateCaseAsync(CaseCreateDto dto)
+        //{
 
-            var entity = new Case
-            {
-                Title = dto.Title,
-                Description = dto.Description,
-                ImageUrl = imagePath,
-                RequiredAmount = dto.RequiredAmount,
-                CollectedAmount = 0,
-                IsUrgent = dto.IsUrgent,
-                CategoryId = dto.CategoryId,
-                CharityId = dto.CharityId,
-                CreatedAt = DateTime.UtcNow
-            };
 
-            await _db.Cases.AddAsync(entity);
-            await _db.SaveChangesAsync();
-            return entity;
-        }
+        //    var imagePath = "default.png";
+
+        //    var entity = new Case
+        //    {
+        //        Title = dto.Title,
+        //        Description = dto.Description,
+        //        ImageUrl = imagePath,
+        //        RequiredAmount = dto.RequiredAmount,
+        //        CollectedAmount = 0,
+        //        IsUrgent = dto.IsUrgent,
+        //        CategoryId = dto.CategoryId,
+        //        CharityId = charityId,
+        //        CreatedAt = DateTime.UtcNow
+        //    };
+
+        //    await _db.Cases.AddAsync(entity);
+        //    await _db.SaveChangesAsync();
+        //    return entity;
+        //}
 
         public async Task<object> UpdateCaseAsync(int id, CaseUpdateDto dto)
         {

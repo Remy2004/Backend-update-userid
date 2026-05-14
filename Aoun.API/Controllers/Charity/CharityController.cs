@@ -1,4 +1,5 @@
 using Aoun.BLL.DTOs.Auth;
+using Aoun.BLL.DTOs.Document;
 using Aoun.BLL.Interfaces; // أو Aoun.BLL.Interfaces.Auth حسب مكان الإنترفيس عندك
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,16 +27,18 @@ namespace Aoun.API.Controllers.Charity
         [HttpPost("complete-profile")]
         public async Task<IActionResult> Complete([FromBody] CharityRegistrationDto model)
         {
-            if (string.IsNullOrWhiteSpace(model.DocumentUrl))
-                return BadRequest(new { success = false, message = "يجب إرفاق رابط مستند الترخيص." });
-
             var result = await _charityService.CompleteProfileAsync(model, GetUserId());
 
-            if (result)
-                return Ok(new { success = true, message = "تم تقديم الطلب بنجاح، في انتظار مراجعة وموافقة الإدارة." });
+            if (!result)
+                return BadRequest(new { success = false, message = "حدث خطأ أثناء حفظ البيانات" });
 
-            return BadRequest(new { success = false, message = "حدث خطأ أثناء تقديم الطلب." });
+            return Ok(new
+            {
+                success = true,
+                message = "تم حفظ البيانات بنجاح، برجاء رفع المستندات"
+            });
         }
+
 
         // ==========================================
         // 2. استعلام الجمعية عن حالة طلبها الحالي
@@ -50,5 +53,29 @@ namespace Aoun.API.Controllers.Charity
 
             return Ok(new { success = true, data = status });
         }
+
+
+
+        // ==========================================
+        // 2. Upload Documents (UNCHANGED)
+        // ==========================================
+        [Authorize(Roles = "Charity")]
+        [HttpPost("upload-documents")]
+        public async Task<IActionResult> UploadDocuments([FromForm] CharityDocumentsDto dto)
+        {
+            var result = await _charityService.UploadDocumentsAsync(dto, GetUserId());
+
+            if (!result)
+                return BadRequest(new { success = false, message = "الجمعية غير موجودة" });
+
+            return Ok(new
+            {
+                success = true,
+                message = "تم تقديم الطلب بنجاح وسيتم مراجعته من الإدارة"
+            });
+        }
+
+
+
     }
 }

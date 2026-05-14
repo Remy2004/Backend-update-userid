@@ -12,7 +12,7 @@ namespace Aoun.BLL.Interfaces.Admin
         Task<bool> UpdateStatusAsync(int id, int status);
         Task<object> GetAllCasesAsync();
         Task<bool> DeleteCaseAsync(int id);
-        Task<object> CreateCaseAsync(CaseCreateDto dto);
+       // Task<object> CreateCaseAsync(CaseCreateDto dto);
         Task<object> UpdateCaseAsync(int id, CaseUpdateDto dto);
         Task<object> GetTopDonorsAsync();
         Task<object> GetTopCharitiesAsync();

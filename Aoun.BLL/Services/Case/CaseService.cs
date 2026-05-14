@@ -7,25 +7,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aoun.DAL.Data;
 
 namespace Aoun.BLL.Services
 {
     public class CaseService : ICaseService
     {
         private readonly ICaseRepository _repo;
+         private readonly ApplicationDbContext _context;
 
-        public CaseService(ICaseRepository repo)
+        public CaseService(ICaseRepository repo, ApplicationDbContext context)
         {
             _repo = repo;
+            _context = context;
         }
 
         // ================= GET ALL =================
-        public async Task<(IEnumerable<CaseGetAllDto> Data, int TotalCount)> GetAllCases(int? categoryId, string status, int page, int pageSize)
+        public async Task<(IEnumerable<CaseGetAllDto> Data, int TotalCount)> GetAllCases(string? categoryName, string status, int page, int pageSize)
         {
             var query = _repo.Query().Include(c => c.Category).AsQueryable();
 
-            if (categoryId.HasValue)
-                query = query.Where(c => c.CategoryId == categoryId);
+            if (!string.IsNullOrEmpty(categoryName))
+            {
+                query = query.Where(c => c.Category.Name == categoryName);
+            }
 
             if (status == "urgent")
                 query = query.Where(c => c.IsUrgent && !c.IsCompleted);
@@ -78,8 +83,13 @@ namespace Aoun.BLL.Services
         }
 
         // ================= CREATE =================
-        public async Task<Aoun.DAL.Entities.Case> CreateCase(CaseCreateDto dto)
+        public async Task<Aoun.DAL.Entities.Case> CreateCase(CaseCreateDto dto,string userId)
         {
+            var charityId = await _context.CharityProfiles
+        .Where(c => c.UserId == userId)
+        .Select(c => c.Id)
+        .FirstOrDefaultAsync();
+
             var imagePath = await ImageHelper.SaveImageAsync(dto.Image, "cases");
 
             var entity = new Aoun.DAL.Entities.Case
@@ -92,7 +102,7 @@ namespace Aoun.BLL.Services
                 IsUrgent = dto.IsUrgent,
                 IsCompleted = false,
                 CategoryId = dto.CategoryId,
-                CharityId = dto.CharityId,
+                CharityId = charityId,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -132,13 +142,52 @@ namespace Aoun.BLL.Services
             };
         }
 
-        // ================= UPDATE =================
-        public async Task<(bool Success, string Message, CaseUpdatedResponseDto? Data)> UpdateCase(int id, CaseUpdateDto dto)
+        //// ================= UPDATE =================
+        //public async Task<(bool Success, string Message, CaseUpdatedResponseDto? Data)> UpdateCase(int id, CaseUpdateDto dto)
+        //{
+        //    var entity = await _repo.GetByIdAsync(id);
+
+        //    if (entity == null)
+        //        return (false, "الحالة غير موجودة", null);
+
+        //    entity.Title = dto.Title;
+        //    entity.Description = dto.Description;
+        //    entity.RequiredAmount = dto.RequiredAmount;
+        //    entity.IsUrgent = dto.IsUrgent;
+        //    entity.CategoryId = dto.CategoryId;
+
+        //    if (dto.Image != null)
+        //    {
+        //        var path = await ImageHelper.SaveImageAsync(dto.Image, "cases");
+        //        entity.ImageUrl = path;
+        //    }
+
+        //    await _repo.SaveChangesAsync();
+
+        //    var result = new CaseUpdatedResponseDto
+        //    {
+        //        Id = entity.Id,
+        //        Title = entity.Title,
+        //        IsUrgent = entity.IsUrgent,
+        //        RequiredAmount = entity.RequiredAmount
+        //    };
+
+        //    return (true, "تم التحديث بنجاح", result);
+        //}
+
+        public async Task<(bool Success, string Message, CaseUpdatedResponseDto? Data)> UpdateCase(int id, CaseUpdateDto dto, string userId)
         {
-            var entity = await _repo.GetByIdAsync(id);
+            var charity = await _context.CharityProfiles
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (charity == null)
+                return (false, "الجمعية غير موجودة", null);
+
+            var entity = await _context.Cases
+                .FirstOrDefaultAsync(c => c.Id == id && c.CharityId == charity.Id);
 
             if (entity == null)
-                return (false, "الحالة غير موجودة", null);
+                return (false, "غير مصرح أو الحالة غير موجودة", null);
 
             entity.Title = dto.Title;
             entity.Description = dto.Description;
@@ -152,7 +201,7 @@ namespace Aoun.BLL.Services
                 entity.ImageUrl = path;
             }
 
-            await _repo.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             var result = new CaseUpdatedResponseDto
             {
@@ -165,24 +214,57 @@ namespace Aoun.BLL.Services
             return (true, "تم التحديث بنجاح", result);
         }
 
-        // ================= DELETE =================
-        public async Task<(bool Success, string Message, Aoun.DAL.Entities.Case? DeletedCase)> DeleteCase(int id)
+
+
+
+
+
+        //// ================= DELETE =================
+        //public async Task<(bool Success, string Message, Aoun.DAL.Entities.Case? DeletedCase)> DeleteCase(int id)
+        //{
+        //    var entity = await _repo.Query()
+        //        .Include(c => c.Donations)
+        //        .FirstOrDefaultAsync(c => c.Id == id);
+
+        //    if (entity == null)
+        //        return (false, "الحالة غير موجودة", null);
+
+        //    if (entity.Donations != null && entity.Donations.Any())
+        //        return (false, "لا يمكن حذف الحالة لانها تحتوى على تبرعات", null);
+
+        //    _repo.Delete(entity);
+        //    await _repo.SaveChangesAsync();
+
+        //    return (true, "تم حذف الحالة بنجاح", entity);
+        //}
+
+
+        public async Task<(bool Success, string Message, Aoun.DAL.Entities.Case? DeletedCase)> DeleteCase(int id, string userId)
         {
+            var charity = await _context.CharityProfiles
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (charity == null)
+                return (false, "الجمعية غير موجودة", null);
+
             var entity = await _repo.Query()
                 .Include(c => c.Donations)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id && c.CharityId == charity.Id);
 
             if (entity == null)
-                return (false, "الحالة غير موجودة", null);
+                return (false, "غير مصرح أو الحالة غير موجودة", null);
 
-            if (entity.Donations != null && entity.Donations.Any())
-                return (false, "لا يمكن حذف الحالة لانها تحتوى على تبرعات", null);
+            if (entity.Donations.Any())
+                return (false, "لا يمكن حذف الحالة لأنها تحتوي على تبرعات", null);
 
             _repo.Delete(entity);
             await _repo.SaveChangesAsync();
 
             return (true, "تم حذف الحالة بنجاح", entity);
         }
+
+
+
 
         // ================= SEARCH =================
         public async Task<(IEnumerable<CaseGetAllDto> Data, int TotalCount)> SearchCases(
@@ -242,14 +324,92 @@ namespace Aoun.BLL.Services
             return (data, total);
         }
 
-        public async Task<CaseDetailsDto?> GetCaseDetails(int id)
+        //public async Task<CaseDetailsDto?> GetCaseDetails(int id)
+        //{
+        //    var caseEntity = await _repo.Query()
+        //        .Include(c => c.Category)
+        //        .Include(c => c.Charity)
+        //        .Include(c => c.Donations)
+        //        .ThenInclude(d => d.User)
+        //        .FirstOrDefaultAsync(c => c.Id == id);
+
+        //    if (caseEntity == null)
+        //        return null;
+
+        //    var weekAgo = DateTime.UtcNow.AddDays(-7);
+
+        //    var weekly = caseEntity.Donations
+        //        .Where(d => d.CreatedAt >= weekAgo)
+        //        .GroupBy(d => d.CreatedAt.Date)
+        //        .Select(g => new DonationChartPointDto
+        //        {
+        //            Label = g.Key.ToString("dd/MM"),
+        //            Amount = g.Sum(x => x.Amount)
+        //        }).ToList();
+
+        //    var startOfMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
+        //    var monthly = caseEntity.Donations
+        //        .Where(d => d.CreatedAt >= startOfMonth)
+        //        .GroupBy(d => d.CreatedAt.Date)
+        //        .Select(g => new DonationChartPointDto
+        //        {
+        //            Label = g.Key.ToString("dd/MM"),
+        //            Amount = g.Sum(x => x.Amount)
+        //        }).ToList();
+
+        //    var lastDonations = caseEntity.Donations
+        //        .OrderByDescending(d => d.CreatedAt)                         //هنا 
+        //        .Take(5)
+        //        .Select(d => new LastDonationDto
+        //        {
+        //            UserName = d.User != null ? d.User.FirstName : "فاعل خير",
+        //            Amount = d.Amount,
+        //            Date = d.CreatedAt
+        //        }).ToList();
+
+        //    return new CaseDetailsDto
+        //    {
+        //        Id = caseEntity.Id,
+        //        Title = caseEntity.Title,
+        //        Description = caseEntity.Description,
+        //        ImageUrl = caseEntity.ImageUrl,
+        //        RequiredAmount = caseEntity.RequiredAmount,
+        //        CollectedAmount = caseEntity.CollectedAmount,
+        //        Progress = caseEntity.RequiredAmount == 0
+        //            ? 0
+        //            : (double)Math.Min(100, Math.Round((caseEntity.CollectedAmount / caseEntity.RequiredAmount) * 100, 1)),
+        //        IsUrgent = caseEntity.IsUrgent,
+        //        IsCompleted = caseEntity.IsCompleted,
+        //        CreatedAt = caseEntity.CreatedAt,
+        //        CompletedAt = caseEntity.CompletedAt,
+        //        CategoryName = caseEntity.Category.Name,
+        //        // 🔥 التعديل هنا لـ CharityName
+        //        CharityName = caseEntity.Charity.CharityName,
+        //        DonorsCount = caseEntity.Donations.Count,
+        //        WeeklyDonations = weekly,
+        //        MonthlyDonations = monthly,
+        //        LastDonations = lastDonations
+        //    };
+        //}
+
+
+
+
+        public async Task<CaseDetailsDto?> GetCaseDetails(int id, string userId)
         {
+            var charity = await _context.CharityProfiles
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (charity == null)
+                return null;
+
             var caseEntity = await _repo.Query()
                 .Include(c => c.Category)
                 .Include(c => c.Charity)
                 .Include(c => c.Donations)
                 .ThenInclude(d => d.User)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id && c.CharityId == charity.Id);
 
             if (caseEntity == null)
                 return null;
@@ -281,7 +441,7 @@ namespace Aoun.BLL.Services
                 .Take(5)
                 .Select(d => new LastDonationDto
                 {
-                    UserName = d.User != null ? d.User.UserName : "فاعل خير",
+                    UserName = d.User != null ? d.User.FirstName : "فاعل خير",
                     Amount = d.Amount,
                     Date = d.CreatedAt
                 }).ToList();
@@ -302,7 +462,6 @@ namespace Aoun.BLL.Services
                 CreatedAt = caseEntity.CreatedAt,
                 CompletedAt = caseEntity.CompletedAt,
                 CategoryName = caseEntity.Category.Name,
-                // 🔥 التعديل هنا لـ CharityName
                 CharityName = caseEntity.Charity.CharityName,
                 DonorsCount = caseEntity.Donations.Count,
                 WeeklyDonations = weekly,
@@ -310,6 +469,14 @@ namespace Aoun.BLL.Services
                 LastDonations = lastDonations
             };
         }
+
+
+
+
+
+
+
+
 
 
         public async Task<(CaseStatsDto Stats, IEnumerable<CaseGetAllDto> Cases, int TotalCount)> GetCharityCasesByFilter(int charityId, string status, int? categoryId, int page, int pageSize)

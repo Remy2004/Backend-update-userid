@@ -72,7 +72,8 @@ namespace Aoun.BLL.Services.Auth
         UserName = request.Email,
         Email = request.Email,
         FirstName = request.FullName,
-        UserType = (UserType)(int)request.AccountType // تحويل الـ Enum المخصص للتسجيل لنوع المستخدم الأصلي
+        UserType = (UserType)(int)request.AccountType ,// تحويل الـ Enum المخصص للتسجيل لنوع المستخدم الأصلي
+        // CreatedAt = DateTime.UtcNow
     };
 
     // 3. حفظ المستخدم في Identity

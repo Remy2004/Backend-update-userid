@@ -1,6 +1,7 @@
 ﻿using Aoun.BLL.DTOs.Donations;
 using Aoun.BLL.DTOs.Payment;
 using Aoun.BLL.Interfaces.Donation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -35,18 +36,46 @@ namespace Aoun.API.Controllers.Donations
             return Ok(result);
         }
 
+        //[HttpGet("/api/cases/{caseId}/donations")]
+        //public async Task<IActionResult> GetCaseDonations(int caseId, int page = 1, int pageSize = 10)
+        //{
+        //    var result = await _service.GetCaseDonations(caseId, page, pageSize);
+        //    return Ok(result);
+        //}
+
+        [Authorize(Roles = "Charity,Admin")]
         [HttpGet("/api/cases/{caseId}/donations")]
         public async Task<IActionResult> GetCaseDonations(int caseId, int page = 1, int pageSize = 10)
         {
-            var result = await _service.GetCaseDonations(caseId, page, pageSize);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = await _service.GetCaseDonations(caseId, page, pageSize, userId);
+
             return Ok(result);
         }
 
+
+
+        //[HttpGet("/api/campaigns/{campaignId}/donations")]
+        //public async Task<IActionResult> GetCampaignDonations(int campaignId, int page = 1, int pageSize = 10)
+        //{
+        //    var result = await _service.GetCampaignDonations(campaignId, page, pageSize);
+        //    return Ok(result);
+        //}
+
+        [Authorize(Roles = "Charity,Admin")]
         [HttpGet("/api/campaigns/{campaignId}/donations")]
         public async Task<IActionResult> GetCampaignDonations(int campaignId, int page = 1, int pageSize = 10)
         {
-            var result = await _service.GetCampaignDonations(campaignId, page, pageSize);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = await _service.GetCampaignDonations(campaignId, page, pageSize, userId);
+
+            if (result == null)
+                return NotFound(new { message = "غير مصرح أو الحملة غير موجودة" });
+
             return Ok(result);
         }
+
     }
 }

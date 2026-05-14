@@ -82,12 +82,12 @@ namespace Aoun.API.Controllers
             return Ok(new { success = true, data = cases });
         }
 
-        [HttpPost("cases")]
-        public async Task<IActionResult> CreateCase([FromBody] CaseCreateDto dto)
-        {
-            var newCase = await _adminService.CreateCaseAsync(dto);
-            return Ok(new { success = true, message = "تم إنشاء الحالة بنجاح", data = newCase });
-        }
+        //[HttpPost("cases")]
+        //public async Task<IActionResult> CreateCase([FromBody] CaseCreateDto dto)
+        //{
+        //   // var newCase = await _adminService.CreateCaseAsync(dto);
+        //    return Ok(new { success = true, message = "تم إنشاء الحالة بنجاح", data = newCase });
+        //}
 
         [HttpPut("cases/{id}")]
         public async Task<IActionResult> UpdateCase(int id, [FromBody] CaseUpdateDto dto)

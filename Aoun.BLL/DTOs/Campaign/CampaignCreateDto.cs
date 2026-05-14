@@ -12,6 +12,6 @@ namespace Aoun.BLL.DTOs.Campaign
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public int CharityId { get; set; } // هيتشال لما نضيف JWT
+       
     }
 }

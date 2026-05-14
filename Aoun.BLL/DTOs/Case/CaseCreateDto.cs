@@ -10,6 +10,6 @@ namespace Aoun.BLL.DTOs.Case
         public decimal RequiredAmount { get; set; }
         public bool IsUrgent { get; set; }
         public int CategoryId { get; set; }
-        public int CharityId { get; set; }
+      
     }
 }

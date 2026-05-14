@@ -6,24 +6,26 @@ namespace Aoun.BLL.Interfaces
 {
     public interface ICaseService
     {
-        Task<(IEnumerable<CaseGetAllDto> Data, int TotalCount)> GetAllCases(int? categoryId, string status, int page, int pageSize);
+        Task<(IEnumerable<CaseGetAllDto> Data, int TotalCount)> GetAllCases(string? categoryName, string status, int page, int pageSize);
 
         Task<IEnumerable<CaseHomeCardDto>> GetHomeCases();
 
         Task<(CaseStatsDto Stats, IEnumerable<CaseGetAllDto> Cases, int TotalCount)> GetCharityCasesByFilter(
             int charityId, string status, int? categoryId, int page, int pageSize);
 
-        Task<Case> CreateCase(CaseCreateDto dto);
+        Task<Case> CreateCase(CaseCreateDto dto, string userId);
 
         Task<PublicCaseDetailsDto?> GetPublicCaseDetails(int id);
 
-        Task<CaseDetailsDto?> GetCaseDetails(int id);  //دى للجمعيه 
+      //  Task<CaseDetailsDto?> GetCaseDetails(int id);  //دى للجمعيه 
+        Task<CaseDetailsDto?> GetCaseDetails(int id, string userId);  //دى للجمعيه
 
 
-        Task<(bool Success, string Message, CaseUpdatedResponseDto? Data)> UpdateCase(int id, CaseUpdateDto dto);
+        // Task<(bool Success, string Message, CaseUpdatedResponseDto? Data)> UpdateCase(int id, CaseUpdateDto dto);
+        Task<(bool Success, string Message, CaseUpdatedResponseDto? Data)> UpdateCase(int id, CaseUpdateDto dto, string userId);
 
-        Task<(bool Success, string Message, Case? DeletedCase)> DeleteCase(int id);
-
+        // Task<(bool Success, string Message, Case? DeletedCase)> DeleteCase(int id);
+        Task<(bool Success, string Message, Case? DeletedCase)> DeleteCase(int id, string userId);
 
 
         Task<(IEnumerable<CaseGetAllDto> Data, int TotalCount)> SearchCases(

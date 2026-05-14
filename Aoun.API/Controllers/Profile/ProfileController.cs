@@ -1,4 +1,4 @@
-using Aoun.BLL.DTOs.Profile;
+﻿using Aoun.BLL.DTOs.Profile;
 using Aoun.BLL.Interfaces.Profile;
 using Aoun.DAL.Data; 
 using Aoun.DAL.Entities;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore; 
 using System.Security.Claims;
+
 
 
 namespace Aoun.API.Controllers;
@@ -39,7 +40,7 @@ public class ProfileController : ControllerBase
     [HttpPost("upload-picture")]
     public async Task<IActionResult> Picture([FromForm] IFormFile file)
     {
-        if (file == null || file.Length == 0) return BadRequest("No file uploaded.");
+        if (file == null || file.Length == 0) return BadRequest("لم يتم تحميل اى ملفات.");
         var userId = GetUserId();
         var result = await _profile.UploadProfilePictureAsync(userId, file);
         return Ok(new { imageUrl = result });
@@ -61,7 +62,7 @@ public class ProfileController : ControllerBase
         var alreadyExists = await _db.Favorites
             .AnyAsync(f => f.UserId == userId && f.CaseId == caseId);
 
-        if (alreadyExists) return BadRequest("Already in favorites.");
+        if (alreadyExists) return BadRequest("موجودة بالفعل فى المفضلة.");
 
         // 4. Create the object manually to ensure no navigation property issues
         var favorite = new Aoun.DAL.Entities.Favorite
@@ -75,7 +76,7 @@ public class ProfileController : ControllerBase
         {
             _db.Favorites.Add(favorite);
             await _db.SaveChangesAsync();
-            return Ok(new { message = "Added to favorites successfully." });
+            return Ok(new { message = "تم الاضافة الى المفضلة بنجاح ." });
         }
         catch (Exception ex)
         {
@@ -103,4 +104,7 @@ public class ProfileController : ControllerBase
     [HttpGet("activity")]
     public async Task<IActionResult> Activity()
         => Ok(await _profile.GetActivityAsync(GetUserId()));
+
+    
+   
 }

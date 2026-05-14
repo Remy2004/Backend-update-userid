@@ -101,6 +101,38 @@ namespace Aoun.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Aoun.DAL.Entities.Auth.CharityDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CharityProfileId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DocumentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharityProfileId");
+
+                    b.ToTable("CharityDocuments");
+                });
+
             modelBuilder.Entity("Aoun.DAL.Entities.Campaign", b =>
                 {
                     b.Property<int>("Id")
@@ -110,9 +142,6 @@ namespace Aoun.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CharityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CharityId1")
                         .HasColumnType("int");
 
                     b.Property<decimal>("CollectedAmount")
@@ -152,9 +181,7 @@ namespace Aoun.DAL.Migrations
 
                     b.HasIndex("CharityId");
 
-                    b.HasIndex("CharityId1");
-
-                    b.ToTable("Campaigns", (string)null);
+                    b.ToTable("Campaigns");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.Case", b =>
@@ -169,9 +196,6 @@ namespace Aoun.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("CharityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CharityId1")
                         .HasColumnType("int");
 
                     b.Property<decimal>("CollectedAmount")
@@ -216,9 +240,7 @@ namespace Aoun.DAL.Migrations
 
                     b.HasIndex("CharityId");
 
-                    b.HasIndex("CharityId1");
-
-                    b.ToTable("Cases", (string)null);
+                    b.ToTable("Cases");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.Cases.Report", b =>
@@ -244,7 +266,7 @@ namespace Aoun.DAL.Migrations
 
                     b.HasIndex("CaseId");
 
-                    b.ToTable("Reports", (string)null);
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.Category.Category", b =>
@@ -271,7 +293,7 @@ namespace Aoun.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -346,95 +368,6 @@ namespace Aoun.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Aoun.DAL.Entities.Charity.Charity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("EmergencyFund")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LicenseNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProfileStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Charity", (string)null);
-                });
-
-            modelBuilder.Entity("Aoun.DAL.Entities.CharityDocument", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CharityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CharityProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DocumentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DocumentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DocumentUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CharityId");
-
-                    b.HasIndex("CharityProfileId");
-
-                    b.ToTable("CharityDocuments", (string)null);
-                });
-
             modelBuilder.Entity("Aoun.DAL.Entities.CharityProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -447,6 +380,13 @@ namespace Aoun.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CharityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -472,7 +412,7 @@ namespace Aoun.DAL.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("CharityProfiles", (string)null);
+                    b.ToTable("CharityProfiles");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.Donation", b =>
@@ -496,9 +436,6 @@ namespace Aoun.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("CharityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CharityId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -546,11 +483,9 @@ namespace Aoun.DAL.Migrations
 
                     b.HasIndex("CharityId");
 
-                    b.HasIndex("CharityId1");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("Donations", (string)null);
+                    b.ToTable("Donations");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.DonorProfile", b =>
@@ -587,7 +522,7 @@ namespace Aoun.DAL.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("DonorProfiles", (string)null);
+                    b.ToTable("DonorProfiles");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.Favorite", b =>
@@ -618,7 +553,7 @@ namespace Aoun.DAL.Migrations
                         .IsUnique()
                         .HasFilter("[CaseId] IS NOT NULL AND [CampaignId] IS NOT NULL");
 
-                    b.ToTable("Favorites", (string)null);
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.Notification", b =>
@@ -649,7 +584,7 @@ namespace Aoun.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.TrustScore", b =>
@@ -673,7 +608,7 @@ namespace Aoun.DAL.Migrations
 
                     b.HasIndex("CharityProfileId");
 
-                    b.ToTable("TrustScores", (string)null);
+                    b.ToTable("TrustScores");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.Zakat", b =>
@@ -706,7 +641,7 @@ namespace Aoun.DAL.Migrations
 
                     b.HasIndex("DonorProfileId");
 
-                    b.ToTable("ZakatCalculations", (string)null);
+                    b.ToTable("ZakatCalculations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -842,6 +777,17 @@ namespace Aoun.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Aoun.DAL.Entities.Auth.CharityDocument", b =>
+                {
+                    b.HasOne("Aoun.DAL.Entities.CharityProfile", "CharityProfile")
+                        .WithMany("Documents")
+                        .HasForeignKey("CharityProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CharityProfile");
+                });
+
             modelBuilder.Entity("Aoun.DAL.Entities.Campaign", b =>
                 {
                     b.HasOne("Aoun.DAL.Entities.CharityProfile", "Charity")
@@ -849,10 +795,6 @@ namespace Aoun.DAL.Migrations
                         .HasForeignKey("CharityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Aoun.DAL.Entities.Charity.Charity", null)
-                        .WithMany("Campaigns")
-                        .HasForeignKey("CharityId1");
 
                     b.Navigation("Charity");
                 });
@@ -871,10 +813,6 @@ namespace Aoun.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Aoun.DAL.Entities.Charity.Charity", null)
-                        .WithMany("Cases")
-                        .HasForeignKey("CharityId1");
-
                     b.Navigation("Category");
 
                     b.Navigation("Charity");
@@ -889,34 +827,6 @@ namespace Aoun.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Case");
-                });
-
-            modelBuilder.Entity("Aoun.DAL.Entities.Charity.Charity", b =>
-                {
-                    b.HasOne("Aoun.DAL.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Aoun.DAL.Entities.CharityDocument", b =>
-                {
-                    b.HasOne("Aoun.DAL.Entities.Charity.Charity", "Charity")
-                        .WithMany("Documents")
-                        .HasForeignKey("CharityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Aoun.DAL.Entities.CharityProfile", null)
-                        .WithMany("Documents")
-                        .HasForeignKey("CharityProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Charity");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.CharityProfile", b =>
@@ -945,10 +855,6 @@ namespace Aoun.DAL.Migrations
                         .HasForeignKey("CharityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Aoun.DAL.Entities.Charity.Charity", null)
-                        .WithMany("Donations")
-                        .HasForeignKey("CharityId1");
 
                     b.HasOne("Aoun.DAL.Entities.ApplicationUser", "User")
                         .WithMany()
@@ -1102,17 +1008,6 @@ namespace Aoun.DAL.Migrations
             modelBuilder.Entity("Aoun.DAL.Entities.Category.Category", b =>
                 {
                     b.Navigation("Cases");
-                });
-
-            modelBuilder.Entity("Aoun.DAL.Entities.Charity.Charity", b =>
-                {
-                    b.Navigation("Campaigns");
-
-                    b.Navigation("Cases");
-
-                    b.Navigation("Documents");
-
-                    b.Navigation("Donations");
                 });
 
             modelBuilder.Entity("Aoun.DAL.Entities.CharityProfile", b =>

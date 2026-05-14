@@ -6,7 +6,7 @@ namespace Aoun.BLL.Interfaces.Campaign
 {
     public interface ICampaignService
     {
-        Task<CampaignEntity> CreateCampaign(CampaignCreateDto dto);
+        Task<CampaignEntity> CreateCampaign(CampaignCreateDto dto, string userId);
 
         Task<IEnumerable<CampaignHomeDto>> GetHomeCampaigns();
 
@@ -16,10 +16,13 @@ namespace Aoun.BLL.Interfaces.Campaign
 
         Task<CampaignDetailsUserDto?> GetCampaignDetailsForUser(int id);
 
-        Task<CampaignDetailsCharityDto?> GetCampaignDetailsForCharity(int id);
+        //Task<CampaignDetailsCharityDto?> GetCampaignDetailsForCharity(int id);
+        Task<CampaignDetailsCharityDto?> GetCampaignDetailsForCharity(int id, string userId);
 
-        Task<(bool Success, string Message)> UpdateCampaign(int id, UpdateCampaignDto dto);
+        //Task<(bool Success, string Message)> UpdateCampaign(int id, UpdateCampaignDto dto);
+        Task<(bool Success, string Message)> UpdateCampaign(int id, UpdateCampaignDto dto, string userId);
 
-        Task<(bool Success, string Message)> DeleteCampaign(int id);
+        //Task<(bool Success, string Message)> DeleteCampaign(int id);
+        Task<(bool Success, string Message)> DeleteCampaign(int id, string userId);
     }
 }

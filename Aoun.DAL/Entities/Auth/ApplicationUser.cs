@@ -9,6 +9,7 @@ public class ApplicationUser : IdentityUser {
     public CharityProfile? CharityProfile { get; set; }
     public DonorProfile? DonorProfile { get; set; }
     public ICollection<Zakat>? ZakatCalculations { get; set; }
+  //  public DateTime CreatedAt { get; set; }
 }
 
 

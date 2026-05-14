@@ -31,12 +31,19 @@ var builder = WebApplication.CreateBuilder(args);
 // ==========================
 // 1. Database Configuration
 // ==========================
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseSqlServer(
+//        builder.Configuration.GetConnectionString("DefaultConnection")
+//        ?? "Server=.;Database='Aoun Charity Platform';Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
+//    )
+//);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? "Server=.;Database='Aoun Charity Platform';Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
     )
 );
+
+
 
 // ==========================
 // 2. Identity Configuration
@@ -138,6 +145,7 @@ builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 
 builder.Services.AddScoped<IFavoritesRepository, FavoritesRepository>();
 builder.Services.AddScoped<IFavoritesService, FavoritesService>();
+builder.Services.AddScoped<ICharityDashboardService, CharityDashboardService>();
 
 // ==========================
 // 7. General API Services
@@ -243,10 +251,10 @@ var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
 // 🔥 التعديل الجذري: ده بيعمل Update-Database أوتوماتيك أول ما المشروع يشتغل
-await context.Database.MigrateAsync();
+//await context.Database.MigrateAsync();
 
 // 🔥 بينده على الـ Seed براحته عشان يضيف الأدمن والبيانات الأساسية
-await Aoun.API.Data.DbInitializer.SeedAsync(context, userManager, roleManager);
+//await Aoun.API.Data.DbInitializer.SeedAsync(context, userManager, roleManager);
 }
 catch (Exception ex)
 {
